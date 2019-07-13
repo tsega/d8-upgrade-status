@@ -1,0 +1,18 @@
+services:
+  upgrade_status.string_input:
+    class: Symfony\Component\Console\Input\StringInput
+    arguments: ['analyse']
+  upgrade_status.buffered_output:
+    class: Symfony\Component\Console\Output\BufferedOutput
+  upgrade_status.deprecation_analyser:
+    class: Drupal\upgrade_status\DeprecationAnalyser
+    arguments: ['@keyvalue', '@logger.channel.upgrade_status', '@upgrade_status.string_input', '@upgrade_status.buffered_output', '@config.factory', '@http_client']
+  upgrade_status.project_collector:
+    class: Drupal\upgrade_status\ProjectCollector
+    arguments: ['@extension.list.module', '@theme_handler', '@extension.list.profile']
+  upgrade_status.result_formatter:
+    class: Drupal\upgrade_status\ScanResultFormatter
+    arguments: ['@keyvalue', '@date.formatter', '@datetime.time']
+  logger.channel.upgrade_status:
+    parent: logger.channel_base
+    arguments: ['upgrade_status']

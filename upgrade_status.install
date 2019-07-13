@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the Upgrade Status module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function upgrade_status_uninstall() {
+  \Drupal::keyValue('upgrade_status_scan_results')->deleteAll();
+}
+
+/**
+ * Delete old state information that is not anymore relevant or valid.
+ *
+ * You will need to scan modules again to get your results back (now in
+ * the new format).
+ */
+function upgrade_status_update_8101() {
+  \Drupal::state()->delete('upgrade_status.number_of_jobs');
+  \Drupal::state()->delete('upgrade_status.last_scan');
+  \Drupal::state()->delete('upgrade_status.scanning_job_fatal');
+  \Drupal::keyValue('upgrade_status_scan_results')->deleteAll();
+
+  // Drop the 'queue_inspectable' table if it exists. The module used
+  // to come with a custom queue implementation of this name.
+  $db = \Drupal::database();
+  $schema = $db->schema();
+  if ($schema->tableExists('queue_inspectable')) {
+    if (!$db->select('queue_inspectable')->countQuery()->execute()->fetchField()) {
+      $schema->dropTable('queue_inspectable');
+    }
+    else {
+      return t("Most legacy Upgrade Status data was cleaned up, however the 'queue_inspectable' table remains because it had values in it. This will not cause issues with the module, but will linger around as old unused data in the database. It may become a problem in the future if another module chooses to use the same queue type name. Please remove manually.");
+    }
+  }
+}

@@ -1,0 +1,16 @@
+type: module
+name: 'Upgrade Status'
+description: 'Review current status of known Drupal 9 incompatibilities on the site.'
+configure: upgrade_status.report
+package: Administration
+# core: 8.x
+php: 7.1
+dependencies:
+  - drupal:update
+  - drupal:git_deploy
+
+# Information added by Drupal.org packaging script on 2019-07-01
+version: '8.x-1.0-alpha5+2-dev'
+core: '8.x'
+project: 'upgrade_status'
+datestamp: 1561992787

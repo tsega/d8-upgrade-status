@@ -1,0 +1,16 @@
+{
+    "name": "drupal/upgrade_status",
+    "type": "drupal-module",
+    "description": "Review current status of known Drupal 9 incompatibilities on the site.",
+    "homepage": "http://drupal.org/project/upgrade_status",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^8.6",
+        "mglaman/phpstan-drupal": "^0.11.9",
+        "phpstan/phpstan": "^0.11.8",
+        "phpstan/phpstan-deprecation-rules": "^0.11.2",
+        "drupal/git_deploy": "2.x-dev",
+        "phpunit/phpunit": "^4.8.35 || ^6.5"
+    },
+    "minimum-stability": "dev"
+}

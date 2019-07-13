@@ -1,0 +1,13 @@
+name: 'Upgrade status test contrib no error'
+type: module
+description: 'Support module for upgrade status module testing.'
+package: Testing
+# version: VERSION
+# core: 8.x
+# project: 'upgrade_status'
+
+# Information added by Drupal.org packaging script on 2019-07-01
+version: '8.x-1.0-alpha5+2-dev'
+core: '8.x'
+project: 'upgrade_status'
+datestamp: 1561992787

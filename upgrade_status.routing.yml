@@ -1,0 +1,23 @@
+upgrade_status.report:
+  path: '/admin/reports/upgrade'
+  defaults:
+    _form: '\Drupal\upgrade_status\Form\UpgradeStatusForm'
+    _title: 'Upgrade status'
+  requirements:
+    _permission: 'administer software updates'
+
+upgrade_status.project:
+  path: '/admin/reports/upgrade/project/{type}/{project_machine_name}'
+  defaults:
+    _controller: '\Drupal\upgrade_status\Controller\ScanResultController::resultPage'
+    _title: 'Upgrade status'
+  requirements:
+    _permission: 'administer software updates'
+
+upgrade_status.export:
+  path: '/admin/reports/upgrade/export/{type}/{project_machine_name}'
+  defaults:
+    _controller: '\Drupal\upgrade_status\Controller\ScanResultController::resultExport'
+    _title: 'Upgrade status'
+  requirements:
+    _permission: 'administer software updates'

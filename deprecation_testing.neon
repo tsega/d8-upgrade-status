@@ -1,0 +1,57 @@
+# @todo document the sources (and the versions of sources) of parts of this
+# file and why each thing is done
+parameters:
+		# Ignore tests and api
+	excludes_analyse:
+		- *.api.php
+		- */tests/Drupal/Tests/Listeners/Legacy/*
+		- */tests/fixtures/*.php
+	customRulesetUsed: true
+	fileExtensions:
+		- module
+		- theme
+		- inc
+	# Ignore phpstan-drupal extension's rules.
+	ignoreErrors:
+		- '#\Drupal calls should be avoided in classes, use dependency injection instead#'
+		- '#Plugin definitions cannot be altered.#'
+		- '#Missing cache backend declaration for performance.#'
+		- '#Plugin manager has cache backend specified but does not declare cache tags.#'
+	reportUnmatchedIgnoredErrors: false
+extensions:
+	drupal: PHPStan\DependencyInjection\DrupalExtension
+drupal:
+	entityTypeStorageMapping:
+		node: Drupal\node\NodeStorage
+		taxonomy_term: Drupal\taxonomy\TermStorage
+		user: Drupal\user\UserStorage
+rules:
+	- PHPStan\Rules\Classes\PluginManagerInspectionRule
+	- PHPStan\Rules\Drupal\Coder\DiscouragedFunctionsRule
+	- PHPStan\Rules\Drupal\GlobalDrupalDependencyInjectionRule
+	- PHPStan\Rules\Drupal\PluginManager\PluginManagerSetsCacheBackendRule
+	- PHPStan\Rules\Deprecations\AccessDeprecatedPropertyRule
+	- PHPStan\Rules\Deprecations\AccessDeprecatedStaticPropertyRule
+	- PHPStan\Rules\Deprecations\CallToDeprecatedFunctionRule
+	- PHPStan\Rules\Deprecations\CallToDeprecatedMethodRule
+	- PHPStan\Rules\Deprecations\CallToDeprecatedStaticMethodRule
+	- PHPStan\Rules\Deprecations\FetchingClassConstOfDeprecatedClassRule
+	- PHPStan\Rules\Deprecations\ImplementationOfDeprecatedInterfaceRule
+	- PHPStan\Rules\Deprecations\InheritanceOfDeprecatedClassRule
+	- PHPStan\Rules\Deprecations\InheritanceOfDeprecatedInterfaceRule
+	- PHPStan\Rules\Deprecations\InstantiationOfDeprecatedClassRule
+	- PHPStan\Rules\Deprecations\UsageOfDeprecatedTraitRule
+services:
+	drupal.serviceMapFactory:
+		class: PHPStan\Drupal\ServiceMapFactoryInterface
+		factory: PHPStan\Drupal\ServiceMapFactory(%drupalServiceMap%)
+	-
+		class: @drupal.serviceMapFactory::create()
+	-
+		class: PHPStan\Type\EntityTypeManagerGetStorageDynamicReturnTypeExtension
+		arguments:
+			entityTypeStorageMapping: %drupal.entityTypeStorageMapping%
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		class: PHPStan\Type\ServiceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
