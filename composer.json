@@ -10,7 +10,8 @@
         "phpstan/phpstan": "^0.11.8",
         "phpstan/phpstan-deprecation-rules": "^0.11.2",
         "drupal/git_deploy": "2.x-dev",
-        "phpunit/phpunit": "^4.8.35 || ^6.5"
+        "phpunit/phpunit": "^4.8.35 || ^6.5",
+        "mathieuviossat/arraytotexttable": "~1.0.0"
     },
     "minimum-stability": "dev"
 }

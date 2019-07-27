@@ -21,6 +21,11 @@ function upgrade_status_theme($existing, $type, $theme, $path) {
         'projects' => [],
       ],
     ],
+    'upgrade_status_ascii_export' => [
+      'variables' => [
+        'projects' => [],
+      ],
+    ],
     'upgrade_status_summary_counter' => [
       'variables' => [
         'summary' => [],
@@ -36,6 +41,24 @@ function upgrade_status_theme($existing, $type, $theme, $path) {
  *   Array of template variables.
  */
 function template_preprocess_upgrade_status_html_export(&$variables) {
+  $projects = $variables['projects'];
+  $types = ['custom', 'contrib'];
+  foreach ($types as $type) {
+    if (!empty($projects[$type])) {
+      foreach ($projects[$type] as $key => $project) {
+        $variables['projects'][$type][$key]['name'] = $projects[$type][$key]['#title'];
+      }
+    }
+  }
+}
+
+/**
+ * Preprocess project list for export.
+ *
+ * @param array $variables
+ *   Array of template variables.
+ */
+function template_preprocess_upgrade_status_ascii_export(&$variables) {
   $projects = $variables['projects'];
   $types = ['custom', 'contrib'];
   foreach ($types as $type) {

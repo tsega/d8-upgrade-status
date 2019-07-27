@@ -160,6 +160,12 @@ class UpgradeStatusForm extends FormBase {
       '#weight' => 5,
       '#submit' => [[$this, 'exportReport']],
     ];
+    $form['drupal_upgrade_status_form']['action']['export_ascii'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Export selected (as ASCII)'),
+      '#weight' => 5,
+      '#submit' => [[$this, 'exportAsciiReport']],
+    ];
 
     return $form;
   }
@@ -430,6 +436,40 @@ class UpgradeStatusForm extends FormBase {
 
     $build = [
       '#theme' => 'upgrade_status_html_export',
+      '#projects' => $extensions
+    ];
+
+    $fileDate = $this->resultFormatter->formatDateTime(0, 'html_datetime');
+    $filename = 'upgrade-status-export-' . $fileDate . '.html';
+    $response = new Response($this->renderer->renderRoot($build));
+    $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    $form_state->setResponse($response);
+  }
+
+  /**
+   * Form submission handler.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function exportAsciiReport(array &$form, FormStateInterface $form_state) {
+    $extensions = [];
+    $projects = $this->projectCollector->collectProjects();
+    $submitted = $form_state->getValues();
+
+    foreach (['custom', 'contrib'] as $type) {
+      foreach($submitted[$type]['data']['data'] as $project => $checked) {
+        if ($checked !== 0) {
+          // If the checkbox was checked, add it to the list.
+          $extensions[$type][$project] = $this->resultFormatter->formatAsciiResult($projects[$type][$project]);
+        }
+      }
+    }
+
+    $build = [
+      '#theme' => 'upgrade_status_ascii_export',
       '#projects' => $extensions
     ];
 

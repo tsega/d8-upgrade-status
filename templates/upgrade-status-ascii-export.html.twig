@@ -1,0 +1,68 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Upgrade status report - {{ date }}</title>
+</head>
+<body>
+<pre>
+{{ "Upgrade Status report"|t }}
+--------------------------------------------------------------------------------
+
+{% if projects.custom %}
+{{ "Custom modules and themes"|t }}
+--------------------------------------------------------------------------------
+{% for project in projects.custom %}
+{{ project.name }}
+--------------------------------------------------------------------------------
+{% set projDate %}
+{{ project.date }}
+{% endset %}
+{{ projDate|striptags|wordwrap(80) }}
+--------------------------------------------------------------------------------
+{% set projSummary %}
+{{ project.summary }}
+{% endset %}
+{{ projSummary|striptags|wordwrap(80) }}
+--------------------------------------------------------------------------------
+{% if project.plans %}
+{% set projPlans %}
+{{ project.plans }}
+{% endset %}
+{{ projPlans|striptags|wordwrap(80) }}
+--------------------------------------------------------------------------------
+{% endif %}
+{{ project.data }}
+{% endfor %}
+{% endif %}
+
+{% if projects.contrib %}
+{{ "Contributed modules and themes"|t }}
+--------------------------------------------------------------------------------
+{% for project in projects.contrib %}
+{{ project.name }}
+--------------------------------------------------------------------------------
+{% set projDate %}
+{{ project.date }}
+{% endset %}
+{{ projDate|striptags }}
+--------------------------------------------------------------------------------
+{% set projSummary %}
+{{ project.summary }}
+{% endset %}
+{{ projSummary|striptags|wordwrap(80) }}
+--------------------------------------------------------------------------------
+{% if project.plans %}
+{% set projPlans %}
+{{ project.plans }}
+{% endset %}
+{{ projPlans|striptags|wordwrap(80) }}
+--------------------------------------------------------------------------------
+{% endif %}
+{{ project.data }}
+{% endfor %}
+{% endif %}
+</pre>
+</body>
+</html>
