@@ -5,7 +5,7 @@
     "homepage": "http://drupal.org/project/upgrade_status",
     "license": "GPL-2.0-or-later",
     "require": {
-        "drupal/core": "^8.6",
+        "drupal/core": "^9.3",
         "mglaman/phpstan-drupal": "^0.11.9",
         "phpstan/phpstan": "^0.11.8",
         "phpstan/phpstan-deprecation-rules": "^0.11.2",
